@@ -1,3 +1,11 @@
+# 前言
+我原本是在做關於貝爾不等式的研究時，看到有些方法是基於因果模型。
+以前看的相關研究就覺得雲裡霧裡的，
+雖然有關注一下相關的研究，也僅僅只是之到了干預的概念，但並沒有很深刻。
+在當兵的時侯拜讀了Judea Pearl的Causality Model, Reasoning and inference, Senond Edtion
+對其中的東西理解了一些些，
+在這個欄目我會深入淺出的講一下概念，並實作一些範本。
+
 # 相關性v.s因果關係
 日常常見很多相關性的定義方式，
 往往相關性與因果關係有著密切的關係：
@@ -17,7 +25,22 @@
 # 本體論v.s認識論
 在許多時候我們觀測各種數據，都是基於相關性，但往往我們想知道的是事情的因果關係
 這其實是基於不同的哲學準則來觀測與預測事物，以下我們來以數據科學上面的例子來看
+## Bayes詮釋 (Bayes interpretation)
+認識論代表著我們是希望透過過往的經驗來更加深對於事物的理解
+我們習慣觀察機率分布，時常有時候藉由過往經驗來進行預測
+這是基於數據的方式來增強或是削減我們對於機率事件的信任程度
+$$P\left( {H|e} \right) = \frac{{P(e|H)P\left( H \right)}}{{P(e)}}$$
+其中 $P(H|e)$ 是後驗機率(posteriori probability)，根據過往的證據 $e$ (evidence)去看假設 $H$ (hypothesis)
+而 $P(H)$ 被稱為先驗機率(Prior probability)，是根據過往的觀測，前人的經驗所得到的機率
+## Bayes網路 (Bayes networks)
+本體論代表著我們很自然地會去追朔本源，問說一個類別的實體是否存在於最基本的層次上？
+去刻劃因果模型的方式就是使用有向無環圖DAG (Directed acyclic graph)，也被稱為是Bayes網路
+$$P\left( {{x_1},......{x_n}} \right) = {\prod _i}P\left( {{x_i}|p{a_i}} \right)$$
+整體分布 $P(x_1,......x_n)$ 可以被條件機率所連鎖，其中 $P(x_i|pa_i)$ 變數 $x_i$ 是基於父代變數 $pa_i$的。
 
-
+# 因果推斷的三個層次
+1.關聯(Association)
+2.干預(intervenion)
+3.反事實(Counterfactual)
 
 

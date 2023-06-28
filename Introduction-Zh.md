@@ -33,11 +33,47 @@
 $$P\left( {H|e} \right) = \frac{{P(e|H)P\left( H \right)}}{{P(e)}}$$
 其中 $P(H|e)$ 是後驗機率(posteriori probability)，根據過往的證據 $e$ (evidence)去看假設 $H$ (hypothesis)
 而 $P(H)$ 被稱為先驗機率(Prior probability)，是根據過往的觀測，前人的經驗所得到的機率
+
+舉例來說
+假如今天火災警報器響起，
+
+(1)在真的火災發生導致響起的機率為0.95 即 P(警報響|火災)=0.05
+
+(2)在沒發生火災的時候導致響起的機率為0.01 即 P(警報響|沒發生火災)=0.01
+
+(3)根據以往的經驗，某間樓發生火災的機率為P(火災)=0.0001
+
+$$P\left( {H|e} \right) = \frac{{P(e|H)P\left( H \right)}}{{P(e)}}{\rm{ = }}\frac{{P(e|H)P\left( H \right)}}{{P(e|H) + P(e| \bot H)}} = \frac{{0.95 \times {{10}^{ - 4}}}}{{0.95 \times {{10}^{ - 4}} + 0.01 \times \left( {1 - {{10}^{ - 4}}} \right)}} \approx 0.00941$$
+這意味著我們從過往的經驗，先驗機率 $0.0001$ 增強到後驗機率 $0.00941$
+```
+import numpy as np
+import matplotlib.pyplot as plt
+p_eh=0.95
+p_enonh=0.01
+p_0=0.0001
+p_list=[]
+def Baysian_loop(p_eh,p_0,p_enonh):
+  p=p_eh/(p_eh+p_enonh*(1/p_0-1))
+  return p
+
+for i in range(0,10):
+  p_list.append(p_0)
+  p_i=Baysian_loop(p_eh,p_0,p_enonh)
+  p_0=p_i
+plt.scatter(range(0,10),p_list)
+```
+如果我們在經過四個迴圈下 條件機率p(e|H)會趨近於0.99987 越來越接近1
+<div align=center><img src="https://github.com/fluttering13/Causal-models/blob/master/pic/b_loop.png" width="500px"/></div>
+代表著如果我們得知過往的經驗，則我們對這個回顧性支持會越強烈。
+
 ## Bayes網路 (Bayes networks)
 本體論代表著我們很自然地會去追朔本源，問說一個類別的實體是否存在於最基本的層次上？
 去構造因果模型的方式就是使用有向無環圖DAG (Directed acyclic graph)，也被稱為是Bayes網路
 $$P\left( {{x_1},......{x_n}} \right) = {\prod _i}P\left( {{x_i}|p{a_i}} \right)$$
 整體分布 $P(x_1,......x_n)$ 可以被條件機率所連鎖，其中 $P(x_i|pa_i)$ 變數 $x_i$ 是基於父代變數 $pa_i$的。
+
+舉例來說：
+
 像用於描述所有古典事件著名的隱變量模型(local hidden variable model)可以被圖所表達
 <div align=center><img src="https://github.com/fluttering13/Quantum-nonlocality/blob/master/Figure/Bell_sceanrio.png" width="300px"/></div>
 

@@ -19,6 +19,7 @@
 「穿著鞋子睡覺的人跟沒穿著鞋睡覺的人比起來，隔天穿著鞋子睡覺的那群人頭痛的發作率比較高」
 因為穿著鞋子的人通常是喝醉酒的人，但穿鞋子本身跟頭痛並無因果關係，但有高相關性。
 以上諸多例子，都代表著我們往往看到線圖很像或是從數據上的相關性很強，就見到黑影就開槍，並不是一個合理的因果推斷，
+像是像在常用的統計策略或是機器學習都是基於相關性，而導致後續延伸一系列的問題。
 
 結論：要區分出因果關係需要建立起因果模型
 
@@ -34,13 +35,17 @@ $$P\left( {H|e} \right) = \frac{{P(e|H)P\left( H \right)}}{{P(e)}}$$
 而 $P(H)$ 被稱為先驗機率(Prior probability)，是根據過往的觀測，前人的經驗所得到的機率
 ## Bayes網路 (Bayes networks)
 本體論代表著我們很自然地會去追朔本源，問說一個類別的實體是否存在於最基本的層次上？
-去刻劃因果模型的方式就是使用有向無環圖DAG (Directed acyclic graph)，也被稱為是Bayes網路
+去構造因果模型的方式就是使用有向無環圖DAG (Directed acyclic graph)，也被稱為是Bayes網路
 $$P\left( {{x_1},......{x_n}} \right) = {\prod _i}P\left( {{x_i}|p{a_i}} \right)$$
 整體分布 $P(x_1,......x_n)$ 可以被條件機率所連鎖，其中 $P(x_i|pa_i)$ 變數 $x_i$ 是基於父代變數 $pa_i$的。
+像用於描述所有古典事件著名的隱變量模型(local hidden variable model)可以被圖所表達
+<div align=center><img src="https://github.com/fluttering13/Quantum-nonlocality/blob/master/Figure/Bell_sceanrio.png" width="300px"/></div>
+$$P(a,b|x,y)=\sum_\lambda P(\lambda) P(a|x,\lambda) P(b|y,\lambda)$$
 
-# 因果推斷的三個層次
+# 因果推斷的幾個層次
 1.關聯(Association)
 2.干預(intervenion)
 3.反事實(Counterfactual)
-
+4.混雜(confounding)
+5.分岐(ramification)
 

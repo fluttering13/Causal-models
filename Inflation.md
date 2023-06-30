@@ -28,7 +28,7 @@ Phillips曲線是指薪資增長率與失業率的曲線，由於很難衡量通
 
 ## The model
 註：為了方便符號使用，以下小寫已經取了log。
-假設存在著N個島嶼，在其中一個島嶼z，則當前的供給 $q_i$ 可由 係數$\gamma$ 
+假設存在著N個島嶼，在其中一個島嶼z，則當前的供給 $q_i$ 可由係數 $\gamma$ 
 $${q_i} = \left( {{p_i} - p} \right)/\left( {\gamma  - 1} \right) = {r_i}/\left( {\gamma  - 1} \right)$$
 與現價 $p_i$ 和均價 $p$ 所決定 (即真實比率 $r_i$)
 接著我們來看看他是怎麼來的
@@ -39,12 +39,34 @@ $C_i$為根據平衡點所預估當前消費數量，而在理想上勞力投入
 我們整理一下再取個log可以得到
 $${q_i} = \left( {{p_i} - p} \right)/\left( {\gamma  - 1} \right)$$
 這代表著供應商會隨著價格升高而提供出貨的意願。
-
-然而在不完美的資訊下，我們因為很難得知真實比率$r_i$，所以我們引入了隨機的概念，同時考慮了正態分布
-$${y_i}\left( z \right) = \gamma E\left( {{r_i}|{p_i}} \right)$$
+$E\left( {{r_i}|{p_i}} \right) = \frac{{{v_r}}}{{{v_p} + {v_r}}}\left( {{p_i} - E\left( p \right)} \right)$
+然而在不完美的資訊下，我們因為很難得知真實比率 $r_i$，所以我們引入了隨機的概念，同時考慮了正態分布
+$${q_i}\left( z \right) = \gamma E\left( {{r_i}|{p_i}} \right)$$
 其中由正態分布公式給出
 $$E\left( {{r_i}|{p_i}} \right) = E\left( {{r_i}} \right) + \frac{{{\sigma _{{r_i},{p_i}}}}}{{{\sigma _{{p_i}}}^2}}\left( {{p_i} - E\left( {{p_i}} \right)} \right)$$
+其中 $E$代表期望值， $\sigma$ 代表標準差
 $$\frac{{{v_r}}}{{{v_p} + {v_r}}}\left( {{p_i} - E\left( p \right)} \right)$$
-在真實的情況，我們還考慮了信號化參數$Y$，因為真實情況供給會取決於需求端而進行修正，如GDP
+其中 $E\left( {{r_i}} \right)$ 為0(已經取了log)， $v$為變異數, 其中我們做了一個假設
+$${\mathop{\rm cov}} \left( {{r_i},p} \right) = 0$$
+真實比率 $r_i$應該與價格變化 $p_i$無關
+$${q_i} = \gamma \frac{{{v_r}}}{{{v_p} + {v_r}}}\left( {{p_i} - E\left( p \right)} \right)$$
+$\frac{{{v_r}}}{{{v_p} + {v_r}}}$ 稱為信號強度(strength of signal)
+假如 ${v_r} >  > {v_p}$ 代表 真實價格的變化越大 真實比率的條件期望值越接近 $p_i-E(p_i)$
+假如 ${v_p} >  > {v_r}$ 代表 價格浮動的變化遠大於真實價格的變化 真實比率的條件期望值越低於 $p_i-E(p_i)$
+
+##信號化參數 $Y$
+在真實的情況，我們還考慮了信號化參數 $Y$，因為真實情況供給會取決於需求端而進行修正，如GDP
 $$\left( {{p_i} - p} \right)/\left( {\gamma  - 1} \right) = y - \eta \left( {{p_i} - p} \right) + {z_i}$$
-以上我們考慮了冪係數 $\eta$ 與係數 $z_i$，前者與觀測行為相關(如用GDP來測量)，後者與當前價格行為所決定
+以上我們考慮了冪係數 $\eta$ 與係數 $z_i$，前者與觀測行為相關(如用GDP來測量)，後者由當前價格行為所決定
+
+## Lucas供給曲線(Lucas supply curve)
+### 總量供給曲線(Aggregate Supply Curve)
+我們把信號化參數的條目的結果結合前面
+$$y = (\frac{1}{{\gamma  - 1}} + \eta )\left( {{p_i} - p} \right) - {z_i} = b\left( {{p_i} - p} \right) - {z_i}$$
+### 總量需求曲線(Aggregate Demand Curve)
+此處我們使用最簡單的線性關係
+$$y=m-p$$
+平衡點即兩式相等
+$${p_e} = \frac{1}{{1 + b}}m + \frac{b}{{1 + b}}E\left( m \right)$$
+$${y_e} = \frac{b}{{1 + b}}m - \frac{b}{{1 + b}}E\left( m \right)$$
+其中使用了 $E(m)=E(p)$ ，我們也可以解釋為什麼Phillips曲線是成負相關的

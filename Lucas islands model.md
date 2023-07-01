@@ -1,10 +1,12 @@
 # Phillips曲線(Phillips Curve)
 Phillips曲線是指薪資增長率與失業率的曲線，由於很難衡量通貨膨脹，通常是以薪資增長率作為通絡膨脹的指標。
+
 以下來介紹一下相關的金融模型：
 
 # Lucas islands model
 在理想封閉狀態裡面，市場流通的總金額數應該是不變的，但假如總流通的金額變多
 是否會影響到市場的行為？
+
 在介紹這個模型前，我們先提到兩個專有名詞
 ## 需求衝擊(Demand shocks)
 需求衝擊是指當人們對商品或服務的需求改變時，造成價格行為改變的事件
@@ -24,6 +26,7 @@ Phillips曲線是指薪資增長率與失業率的曲線，由於很難衡量通
 這些的機率分布我們假定它們都是正態分布
 ### 不完美的資訊(imperfect information)
 生產者只能觀察到現價，並試圖猜測總量衝擊的影響來進行價格制定；
+
 購買者則是因為需求衝擊造成的影響來制定購買現性的策略，然而在不完美的資訊下，我們很難得知真實比率 $r_i$
 
 ## The model
@@ -33,9 +36,9 @@ $${q_i} = \left( {{p_i} - p} \right)/\left( {\gamma  - 1} \right) = {r_i}/\left(
 與現價 $p_i$ 和均價 $p$ 所決定 (即真實比率 $r_i$)
 同時也是意味著，當現價大於均價時，供給者會比較樂意提高他們的供應量。同時，這個現在也考慮了因為總流通量而變高的因素。
 接著我們來看看他是怎麼來的
-註：不同的島嶼意味著對於一個環境不同的測量，為了方便說明我們在此寫的是$q_i$，尚未進行訊號化
+註：不同的島嶼意味著對於一個環境不同的測量，為了方便說明我們在此寫的是 $q_i$，尚未進行訊號化
 實際上我們考慮的是
-$${y_i}\left( z \right) = \gamma \left( {{p_i}\left( z \right) - p} \right) + {z_i} = \gamma r + {z_i}$$
+$${y_i}\left( z \right) = \gamma \left( {{p_i}\left( z \right) - p} \right) + {z_i} = \gamma r_i + {z_i}$$
 這個 $z_i$ 將訊號化所導致的修正都考慮進去
 ### 效用函數(utility function)
 我們考慮一個很常在經濟學使用的效用函數
@@ -48,7 +51,7 @@ $E\left( {{r_i}|{p_i}} \right) = \frac{{{v_r}}}{{{v_p} + {v_r}}}\left( {{p_i} - 
 然而在不完美的資訊下，我們因為很難得知真實比率 $r_i$，所以我們引入了隨機的概念，同時考慮了正態分布
 $${q_i}\left( z \right) = \gamma E\left( {{r_i}|{p_i}} \right)$$
 其中由正態分布公式給出
-$$E\left( {{r_i}|{p_i}} \right) = E\left( {{r_i}} \right) + \frac{{{\sigma _{{r_i},{p_i}}}}}{{{\sigma _{{p_i}}}^2}}\left( {{p_i} - E\left( {{p_i}} \right)} \right)$$
+$$E\left( {{r_i}|{p_i}} \right) = E\left( {{r_i}} \right) + \frac{{{\sigma _{{r_i},{p_i}}}}}{{{\sigma _{{p_i}}}^2}}\left( {{p_i} - E\left( {{p}} \right)} \right)$$
 其中 $E$代表期望值， $\sigma$ 代表標準差
 $$\frac{{{v_r}}}{{{v_p} + {v_r}}}\left( {{p_i} - E\left( p \right)} \right)$$
 其中 $E\left( {{r_i}} \right)$ 為0(已經取了log)， $v$為變異數, 其中我們做了一個假設
@@ -56,7 +59,9 @@ $${\mathop{\rm cov}} \left( {{r_i},p} \right) = 0$$
 真實比率 $r_i$應該與價格變化 $p_i$無關
 $${q_i} = \gamma \frac{{{v_r}}}{{{v_p} + {v_r}}}\left( {{p_i} - E\left( p \right)} \right)$$
 $\frac{{{v_r}}}{{{v_p} + {v_r}}}$ 稱為信號強度(strength of signal)
-假如 ${v_r} >  > {v_p}$ 代表 真實價格的變化越大 真實比率的條件期望值越接近 $p_i-E(p_i)$
+
+假如 ${v_r} >  > {v_p}$ 代表 真實價格的變化越大 真實比率的條件期望值越接近 $p_i-E(p)$
+
 假如 ${v_p} >  > {v_r}$ 代表 價格浮動的變化遠大於真實價格的變化 真實比率的條件期望值越低於 $p_i-E(p_i)$
 
 ##信號化參數 $Y$
@@ -75,3 +80,8 @@ $$y=m-p$$
 $${p_e} = \frac{1}{{1 + b}}m + \frac{b}{{1 + b}}E\left( m \right)$$
 $${y_e} = \frac{b}{{1 + b}}m - \frac{b}{{1 + b}}E\left( m \right)$$
 其中使用了 $E(m)=E(p)$ ，我們也可以解釋為什麼Phillips曲線是成負相關的
+
+# 實戰擬合演練
+這是一個雛形，從以上很多假設，我們都可以知道還欠缺很多東西
+我們可以從實作上面來邊打邊改，看什麼樣的方式去思考並更近模型是好的方式
+這邊先開個坑，有時間再來更新

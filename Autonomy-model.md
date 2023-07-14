@@ -101,3 +101,7 @@ for k in range(0,point_number):
   b1=b1-0.02*(p[-1]-100)/100
 ```
 <div align=center><img src="https://github.com/fluttering13/Causal-models/blob/master/pic/autonomy_6.png" width="500px"/></div>
+
+當然這也只是最基本的一些震盪模型，真實的市場模型往往更加複雜
+
+但從這簡單的模型就可以做很多的延伸

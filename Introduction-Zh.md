@@ -123,9 +123,18 @@ $$P(a,b|x,y)=\sum_\lambda P(\lambda) P(a|x,\lambda) P(b|y,\lambda)$$
 這正是因果推斷要討論的事情，要如何去量化因果關係？以及在何種架構下的因果關係才是合理的？
 
 # 因果推斷的幾個層次
-1.關聯(Association)
-2.干預(intervenion)
-3.反事實(Counterfactual)
-4.混雜(confounding)
-5.分岐(ramification)
+我們來舉我要去某一間餐廳吃東西 $A$，能吃到好東西 $G$ 所發生的事件來舉例：
 
+1. 關聯(Association)：假如我去了某一間餐廳吃東西，我能夠吃到好東西的條件機率 $P(G|A)$ 。關聯的意思是說有可能發生也有可能不發生，DAG裡面包含A跟G兩個事件。
+2. 干預(intervenion)：我已經去了某一間餐廳吃東西，我能夠吃到好東西的條件機率 $P(G|Do(Resturent=A))$。 干預的意思是說在已經發生的當下，DAG裡面已經把A設為常數。
+3. 反事實(Counterfactual)：我已經知道了不去A餐吃東西，我能吃到好東西的條件機率 $(G|Do(Resturent=A'))$。反事實是包含了A與A'所有的集合。
+
+
+# 延伸閱讀
+因果推論在行銷上的應用
+
+https://medium.com/twdsmeetup/twds-causal-inference-in-marketing-david-huang-4485184dbdb7
+
+因果推論簡介：A/B Testing 行不通時怎麼辦？
+
+https://haosquare.com/causal-inference-intro/

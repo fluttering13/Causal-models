@@ -126,8 +126,102 @@ $$P(a,b|x,y)=\sum_\lambda P(\lambda) P(a|x,\lambda) P(b|y,\lambda)$$
 我們來舉我要去某一間餐廳吃東西 $A$，能吃到好東西 $G$ 所發生的事件來舉例：
 
 1. 關聯(Association)：假如我去了某一間餐廳吃東西，我能夠吃到好東西的條件機率 $P(G|A)$ 。關聯的意思是說有可能發生也有可能不發生，DAG裡面包含A跟G兩個事件。
-2. 干預(intervenion)：我已經去了某一間餐廳吃東西，我能夠吃到好東西的條件機率 $P(G|Do(Resturent=A))$。 干預的意思是說在已經發生的當下，DAG裡面已經把A設為常數。
-3. 反事實(Counterfactual)：我已經知道了不去A餐吃東西，我能吃到好東西的條件機率 $(G|Do(Resturent=A'))$。反事實是包含了A與A'所有的集合。
+2. 干預(intervenion)：我已經去了某一間餐廳吃東西，我能夠吃到好東西的條件機率 $P(G|Do(Restaurant=A))$。 干預的意思是說在已經發生的當下，DAG裡面已經把A設為常數。
+3. 反事實(Counterfactual)：我已經知道了不去A餐吃東西，我能吃到好東西的條件機率 $(G|Do(Restaurant=A'))$。反事實是包含了A與A'所有的集合。
+
+註：此處的DO算子與條件機率的given有所不同
+
+Given是還考慮整體DAG的機制
+
+DO是已經把前面的變數設置為常數，相當於已經阻斷前面DAG的機制
+
+# 關聯不等於因果關係
+我們來看一下這個例子
+
+https://github.com/matheusfacure/python-causality-handbook/blob/master/causal-inference-for-the-brave-and-true/01-Introduction-To-Causality.ipynb
+
+為了很好說明一下這個例子，我們先定義一下符號
+
+$Y_1$ 的意思是 在接受干預的手段後 $T=1$，有受到干預的影響程度 $Y_1$
+
+舉裡頭的例子來說，就是有發送平板後 $T=1$，這些學生接收測驗拿到的分數 $Y_1$
+
+很自然的，個別群體的個別處理效應(individual treatment effect)可以寫成
+$${Y_{1i}} - {Y_{0i}}$$
+如果有好幾個群體就可以取期望值或者平均，即平均處理效應(average treatment effect)，簡稱 $ATE$
+$$E\left( {{Y_1} - {Y_0}} \right)$$
+再來介紹另外一個， 處理族群的平均處理效果(average treatment effect on the treated)，簡稱 ATT$
+$$E\left( {{Y_1} - {Y_0}{\rm{|}}\;{\rm{T = 1}}} \right)$$
+在ATT中，前者很好理解，但後者 $Y_0$ given T=1的意思是什麼？如果那些接收干預手段的，現在沒有接受的話那會怎麼樣。這就是一個反事實的概念
+
+在現實中，它往往很難被量測，只是我們從理想上這樣的概念應該可以被定義，現在我們來看文中提到的例子(假設你今天有超能力可以知道所有的反事實)
+
+```
+import pandas as pd
+import numpy as np
+
+pd.DataFrame(dict(
+    i= [1,2,3,4],
+    Y0=[500,600,800,700],
+    Y1=[450,600,600,750],
+    T= [0,0,1,1],
+    Y= [500,600,600,750],
+    TE=[-50,0,-200,50],
+))
+```
+TE那欄都是Y1-Y0的結果
+
+根據ATE的定義，
+$$ATE = \left( { - 50 + 0 +  - 200 + 50} \right)/4$$
+根據ATT的定義，
+$$ATT = \left( { - 200 + 50} \right)/ - 75$$
+
+從ATE的定義，我們可以從，一號群體所受到手段的影響與沒受到手段的影響去評估效應，所以是在同個群體內評估，聽起來可行
+
+ATT的定義，這個時候需要的資訊又更多了，還需要知道那些是假如接受手段的群體
+
+**ATE跟ATT的差別在，前者考慮了所有有無接受，後者是只考慮假如接受手段的群體**
+
+```
+pd.DataFrame(dict(
+    i= [1,2,3,4],
+    Y0=[500,600,np.nan,np.nan],
+    Y1=[np.nan,np.nan,600,750],
+    T= [0,0,1,1],
+    Y= [500,600,600,750],
+    TE=[np.nan,np.nan,np.nan,np.nan],
+))
+```
+但往往理想很美好，現實很骨感，nan表格通常是一無所知的，上述所定義的ATE跟ATT完全求不出來。
+
+這個時候就有人問了，如果我把群體的標籤拿掉，我能不能直接用 $Y1$-$Y0$
+
+從直覺上你會覺得這當然不行，他們本來就是不一樣的群體，這樣DATA裡面就會有偏差BIAS
+
+用裡面的例子來說就是，可能A學校它們的師資，跟入學學生的PR就足夠高，導致不管他們有沒有拿到平板，考的分數都爆高
+
+但往往這就是實際上會面對到的問題，你怎麼知道你取的這些資料，他們是不是在自於同一個群體？
+
+基於這種無知，所以我們寫下的東西叫做關聯
+$$E\left( {Y{\rm{|}}\;{\rm{T = 1}}} \right) - E\left( {Y{\rm{|}}\;{\rm{T = 0}}} \right)$$
+仔細一看，跟前面做比較就是，你沒辦法區分出哪些是特定的群體，並再更進一步給予下標0或1
+
+我們進一步推導可以得到
+
+$$E\left( {Y{\rm{|T = 1}}} \right) - E\left( {Y{\rm{|T = 0}}} \right) = E\left( {{Y_1}{\rm{|T = 1}}} \right) - E\left( {{Y_0}{\rm{|T = 0}}} \right) + E\left( {{Y_0}{\rm{|T = 1}}} \right) - E\left( {{Y_0}{\rm{|T = 1}}} \right) = ATE + E\left( {{Y_0}{\rm{|T = 1}}} \right) - E\left( {{Y_0}{\rm{|T = 0}}} \right)$$
+後面的 $E\left( {{Y_0}{\rm{|T = 1}}} \right) - E\left( {{Y_0}{\rm{|T = 0}}} \right)$ 我們就說這是偏差
+
+意思是假如「接受手段的人群，他們沒有接受手段的分數」與「沒有接受手段的人群的分數」，比較起來的差別。在此我們通常知道後者，而無法得知前者。
+
+這邊我們思考一下就會理解，**前者等於後者的意思代表，他們是同一個群體**
+
+如果他們是同一個群體，那就可以開心做比較啦!
+
+所以通常我們在處理資料的時候，我們要盡力去做一件事情就是去**消除資料本身的偏差**
+
+最簡單的方式就是去做**隨機化**，意思是說我們藉由抽樣讓窮學校跟有錢的學校有同等的機率抽樣並同時接受手段，融合成一個新群體。
+
+新群體就比較沒有偏差，這個時候關聯性就比較接近因果關係了！
 
 
 # 延伸閱讀
@@ -138,3 +232,6 @@ https://medium.com/twdsmeetup/twds-causal-inference-in-marketing-david-huang-448
 因果推論簡介：A/B Testing 行不通時怎麼辦？
 
 https://haosquare.com/causal-inference-intro/
+
+別人寫的handbook，還附帶py code 讚讚
+https://github.com/matheusfacure/python-causality-handbook

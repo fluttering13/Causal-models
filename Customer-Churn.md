@@ -1,9 +1,17 @@
 # 顧客流失率分析 Customer-Churn 
-來源取至Kaggle:Telco Customer Churn
+資料集來源取至Kaggle:Telco Customer Churn
 
 https://www.kaggle.com/datasets/blastchar/telco-customer-churn/discussion
 
 以下是我們之後會用到的包
+
+numpy pandas 兩個好朋友
+
+還有從sklearn拿出來的SVM 跟 一些拆data或是feature轉換的工具
+
+後面還有一個沒有在這邊特別寫的beta encoding
+
+https://www.kaggle.com/code/mmotoki/beta-target-encoding
 ```
 import numpy as np
 import pandas as pd
@@ -17,7 +25,7 @@ from sklearn.svm import SVC
 from sklearn.metrics import classification_report, confusion_matrix
 ```
 
-# 前處理
+# 資料前處理
 
 先來看看表格屬性有什麼
 ```
@@ -45,9 +53,10 @@ for name in columns:
 Index: []
 Empty DataFrame
 ```
-看來是沒有
+看來裡面的資料都是填好填滿
 
-來粗略看一下有多少元素
+再來來粗略看一下有多少feature，再來決定等等要使用encoding的方式
+
 ```
 print(data_pd.nunique())
 for name in data_pd.columns:
@@ -107,7 +116,7 @@ dtype: int64
 ['No' 'Yes']
 ```
 
-#單變數分布可視化
+## 分布可視化 (feature-frequency-plot)
 
 從以上可以得知，連續性的資料有這三項
 ```
@@ -132,7 +141,7 @@ plt.show()
 
 3. TotalCharge 是一個均勻分布
 
-# 回顧率分析與可視化
+## 回顧率分析與可視化 (histogram plot)
 我們將雙變數或是多變數做直方圖
 ```
 features = ['gender', 'SeniorCitizen', 'Partner', 'Dependents',
@@ -179,7 +188,8 @@ for feature in features:
 16. 從資費為20附近為拒絕續約的最大宗
     
 <div align=center><img src="./Customer-Churn/pic/hist_pay.png" width="400px"/></div>
-# 特例: 資費小等於20
+
+## 特例: 資費小等於20
 再來我們從資費小等於20為拒絕續約的最大宗為條件，在重新看一次分布去了解問題
 
 我們可以懷疑也許費率是一個影響最大的因素
@@ -214,7 +224,7 @@ for feature in features:
    
 
 
-# 分類器任務
+# 分類器任務SVM (SVM classification)
 此處我們利用SVM來進行分類器任務
 
 主要利用libSVM的包
@@ -253,7 +263,7 @@ y_pred = svc.predict(X_test)
 CM=confusion_matrix(y_test, y_pred)
 ```
 
-# 元優化
+## 元優化
 接下來我們來進行一些自動化的ML訓練
 使用optuna的包
 ```
@@ -290,10 +300,14 @@ Best trial parameters: {'C': 60.882149968640974, 'degree': 1, 'kernel': 'poly'}
 Best score: 0.8197303051809794
 ```
 
-# BETA encoding
+## BETA encoding
 回顧一下，前面的feature encoding，其實做了一些不太好的地方
 
-針對一些categorical feature的地方 例如說有 0,1,2 各自map到 0.3,0.6,0.9 但有些feature並沒有這個數值高低的關係
+針對一些categorical feature的地方 例如說有 0,1,2 各自map到 0.3,0.6,0.9 
+
+但categorical feature並沒有這個數值高低的關係
+
+所以要透過一些後驗的方式去修正這個高低
 
 所以我們可以使用feature encoding的方式來幫助提取特徵
 

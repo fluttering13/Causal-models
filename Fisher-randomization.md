@@ -168,11 +168,19 @@ for i in range(N):
         count=count+1
 print(count/N)
 ```
-這邊Exact p-value的定義為大於等於初始值
+
 ```
 0.0016
 ```
-小於0.025，我們拒絕虛無假設代表兩個set之間有因果關係存在
+代表其實基本我們看不太到干預的效果
+
+```
+z_score=(t0-sum(t_list)/len(t_list))/(np.std(t_list)/math.sqrt(len(t_list)))
+p_value=(1-stats.norm.cdf(z_score))*2
+```
+新的H0我們定義為會平均的t會大於初始t0
+
+真的去算p_value會直接給接近0，代表reject這個新的H0 
 
 # Neyman's Repeated Sampling Approach
 我們接下來來看另外一個評估的方式，Neyman框架
